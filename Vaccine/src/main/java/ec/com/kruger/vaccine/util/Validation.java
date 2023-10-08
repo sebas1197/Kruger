@@ -65,6 +65,8 @@ public class Validation {
     public boolean validateDates(Date start, Date end){
         return start != null && end != null && start.before(end);
     }
-
     
+   public <T> boolean validateNullEmpty(T param) {
+        return (param == null || param instanceof CharSequence && ((CharSequence) param).length() == 0);
+    }
 }

@@ -9,6 +9,7 @@ import ec.com.kruger.vaccine.dto.DataEmployeeRequest;
 import ec.com.kruger.vaccine.dto.LoginRequest;
 import ec.com.kruger.vaccine.dto.VaccineRequest;
 import ec.com.kruger.vaccine.model.Employee;
+import ec.com.kruger.vaccine.model.Rol;
 import ec.com.kruger.vaccine.model.Vaccine;
 import ec.com.kruger.vaccine.model.VaccineType;
 import ec.com.kruger.vaccine.services.EmployeeService;
@@ -107,8 +108,9 @@ class EmployeeServiceTest {
         employeeList.add(employee1);
         employeeList.add(employee2);
         this.employeRequest = new EmployeeRequest();
+       
     }
-
+    
     @Test
     void getAllEmployees() {
         try {
@@ -166,8 +168,9 @@ class EmployeeServiceTest {
     @Test
     void givenDateRangeVaccinationReturnEmployees() {
         try {
-            when(vaccinationDetailRepository.findByVaccinationDateBetween(any(),any())).thenReturn(vaccineList);
-            Assertions.assertEquals(employeeList,employeeService.findByDates(new Date(), new Date()));
+            Date currentDate = new Date();
+            when(vaccinationDetailRepository.findByVaccinationDateBetween(new Date(currentDate.getTime() - 86400000),new Date(currentDate.getTime() + 86400000))).thenReturn(vaccineList);
+            Assertions.assertEquals(employeeList,employeeService.findByDates(new Date(currentDate.getTime() - 86400000), new Date(currentDate.getTime() + 86400000)));
         } catch (Exception e){
             log.error("{}", e.getMessage());
         }
@@ -177,7 +180,7 @@ class EmployeeServiceTest {
         try {
             when(vaccineTypeRepository.findById(any())).thenReturn(java.util.Optional.of(vaccineType));
             when(employeeRepository.findById(any())).thenReturn(java.util.Optional.of(employee2));
-            dataEmployeeRequest.setEmail("omarmejia@outlook.com");
+            dataEmployeeRequest.setEmail("juancalero@outlook.com");
             dataEmployeeRequest.setNames("Juan Francisco");
             dataEmployeeRequest.setLastnames("Calero Hidalgo");
             dataEmployeeRequest.setHomeAddress("Quito Norte Carapungo");
@@ -191,7 +194,7 @@ class EmployeeServiceTest {
             vaccinationDetailRQ.setVaccinationDose(1);
             vaccinationDetailsRQ.add(vaccinationDetailRQ);
             dataEmployeeRequest.setVaccinationDetails(vaccinationDetailsRQ);
-            employeeService.updateEmployee(2,dataEmployeeRequest);
+            employeeService.updateEmployee(2,dataEmployeeRequest, Rol.ADMINISTRADOR.toString());
             verify(employeeRepository, times(1)).save(employee2);
         } catch (Exception e){
             log.error("{}", e.getMessage());

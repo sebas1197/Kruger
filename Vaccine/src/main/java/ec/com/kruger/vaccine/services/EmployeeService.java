@@ -98,6 +98,14 @@ public class EmployeeService {
             throw new Exception("Apellidos incorrectos");
         }
 
+        if(validation.validateNullEmpty(employeeRequest.getNames()) 
+                || validation.validateNullEmpty(employeeRequest.getLastnames())
+                || validation.validateNullEmpty(employeeRequest.getIdentification())
+                || validation.validateNullEmpty(employeeRequest.getEmail())){
+   
+            throw new Exception("Debe llenar todos los campos");
+        }
+        
         Employee employee = Employee.builder()
                 .names(employeeRequest.getNames().toUpperCase())
                 .lastnames(employeeRequest.getLastnames().toUpperCase())
@@ -143,18 +151,29 @@ public class EmployeeService {
         Employee employee = optionalEmployee.get();
 
         if (role.equals(Rol.ADMINISTRADOR.toString())) {
+            
+                  if(validation.validateNullEmpty(dataEmployeeRequest.getNames()) 
+                || validation.validateNullEmpty(dataEmployeeRequest.getLastnames())
+                || validation.validateNullEmpty(dataEmployeeRequest.getIdentification())
+                || validation.validateNullEmpty(dataEmployeeRequest.getEmail())){
+            throw new Exception("Debe llenar todos los campos");
+        }
+            
             employee.setIdentification(dataEmployeeRequest.getIdentification());
             employee.setNames(dataEmployeeRequest.getNames());
             employee.setLastnames(dataEmployeeRequest.getLastnames());
             employee.setEmail(dataEmployeeRequest.getEmail());
         } else if (role.equals(Rol.EMPLEADO.toString())) {
+            
+                  if(validation.validateNullEmpty(dataEmployeeRequest.getBirthday()) 
+                || validation.validateNullEmpty(dataEmployeeRequest.getHomeAddress())
+                || validation.validateNullEmpty(dataEmployeeRequest.getCellPhone())
+                || validation.validateNullEmpty(dataEmployeeRequest.getVaccinationStatus())){
+            throw new Exception("Debe llenar todos los campos");
+        }
 
             if (!validation.validatePhone(dataEmployeeRequest.getCellPhone())) {
                 throw new Exception("Teléfono incorrecto");
-            }
-
-            if (this.employeeRepository.existsByCellPhone(dataEmployeeRequest.getCellPhone())) {
-                throw new Exception("Teléfono ya registrado");
             }
 
             if (!dataEmployeeRequest.getVaccinationStatus() && !dataEmployeeRequest.getVaccinationDetails().isEmpty()) {

@@ -25,6 +25,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
 
     Boolean existsByIdentification(String identification);
 
-    Boolean existsByCellPhone(String cellPhone);
+   
 
 }
