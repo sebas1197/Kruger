@@ -4,8 +4,8 @@
  */
 package com.kruger.vaccination.dao;
 
-import com.kruger.vaccination.model.Employee;
-import com.kruger.vaccination.model.User;
+import com.kruger.vaccination.model.Vaccination;
+import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -13,9 +13,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  *
  * @author papic
  */
-public interface UserRepository extends JpaRepository<User, Integer>{
-    List<User> findByRole(String rol);
-    User findByUsername(String username);
-    User findByEmployee(Employee employee);
-    Boolean existsByEmployee(Employee employee);
+public interface VaccineRepository extends JpaRepository<Vaccination, Integer>{
+    List<Vaccination> findByTypeVaccine(String typeVaccine);
+    List<Vaccination> findByDates(LocalDate start, LocalDate end);
 }

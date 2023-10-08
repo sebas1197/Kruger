@@ -2,15 +2,13 @@ package com.kruger.vaccination;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
-import lombok.extern.slf4j.Slf4j;
-
-@SpringBootApplication
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class })
 public class VaccinationApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(VaccinationApplication.class, args);
-
 	}
 
 }

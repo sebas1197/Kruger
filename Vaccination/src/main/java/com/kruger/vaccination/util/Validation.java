@@ -1,11 +1,24 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.kruger.vaccination.util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ *
+ * @author papic
+ */
 public class Validation {
 
-	public boolean validateIdentification(String identification) {
+    public Validation() {
+    }
+    
+    
+    
+    public boolean validateIdentification(String identification) {
         if (identification.length() != 10) {
             return false;
         }
@@ -47,6 +60,4 @@ public class Validation {
         Matcher mather = pat.matcher(phone);
         return mather.find();
     }
-	
-	
 }

@@ -1,19 +1,25 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.kruger.vaccination.security;
 
 import java.security.MessageDigest;
 import java.util.Arrays;
-
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.codec.binary.Base64;
 
-import lombok.extern.slf4j.Slf4j;
-
+/**
+ *
+ * @author papic
+ */
 @Slf4j
 public class Encode {
-	
-	public String Encrypt(String text) {
+    
+    public String encrypt(String text) {
 
         String secretKey = "krugerTest"; 
         String base64EncryptedString = "";
@@ -38,7 +44,7 @@ public class Encode {
         return base64EncryptedString;
 }
   
-  public  String Decrypt(String encryptText) throws Exception {
+  public  String decrypt(String encryptText) throws Exception {
 
         String secretKey = "krugerTest"; 
         String base64EncryptedString = "";
