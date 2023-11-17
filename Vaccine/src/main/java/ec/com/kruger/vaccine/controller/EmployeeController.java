@@ -10,6 +10,7 @@ import ec.com.kruger.vaccine.dto.DatesRequest;
 import ec.com.kruger.vaccine.dto.LoginRequest;
 import ec.com.kruger.vaccine.dto.DataEmployeeRequest;
 import ec.com.kruger.vaccine.model.Employee;
+import ec.com.kruger.vaccine.model.Pokemon;
 import ec.com.kruger.vaccine.model.Rol;
 import ec.com.kruger.vaccine.security.JWTAuthorizationFilter;
 import ec.com.kruger.vaccine.services.EmployeeService;
@@ -18,11 +19,14 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.util.List;
+import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClient;
+
 
 /**
  *
@@ -39,6 +43,14 @@ public class EmployeeController {
     private EmployeeService employeeService;
 
     private JWTAuthorizationFilter jwtAuthorization = new JWTAuthorizationFilter();
+    
+    private final WebClient webClient;
+
+    public EmployeeController(WebClient.Builder webClientBuilder) {
+        this.webClient = webClientBuilder.baseUrl("https://pokeapi.co/api/v2/").build();
+    }
+    
+    
 
     @PostMapping
     @ApiOperation(value = "Registrar un nuevo empleado",
@@ -92,6 +104,14 @@ public class EmployeeController {
         }
     }
 
+    @GetMapping(value = "/poke")
+    public ResponseEntity getAllPokemons() {
+       Pokemon pokemon = webClient.get().uri("/pokemon").retrieve().bodyToMono(Pokemon.class).block();
+//       List<Pokemon.PokemonEntry> pokemons = pokemon.getResults();
+       List<String> names = pokemon.getResults().stream().map(Pokemon.PokemonEntry::getName).collect(Collectors.toList());
+       return ResponseEntity.ok(names);
+    }
+    
     @GetMapping(value = "/{id}")
     @ApiOperation(value = "Listar empleado por su ID",
             notes = "Coincidencia por ID del empleado")
